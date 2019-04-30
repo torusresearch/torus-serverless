@@ -1,2 +1,3 @@
 # torus-serverless
-Hosts the serverless API's 
+
+This repo will host the serverless API's used by torus application
