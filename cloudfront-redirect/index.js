@@ -27,7 +27,7 @@ exports.handler = (event, context, callback) => {
     const secondIndex = olduri.indexOf("/", 1);
     const slicedOrignal = secondIndex === -1 ? olduri : olduri.slice(0, secondIndex);
     newuri = slicedOrignal + `/index.html`;
-  } else if (RegExp(/^\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG)$/).test(olduri)) {
+  } else if (RegExp(/^\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json)$/).test(olduri)) {
     newuri = olduri.replace("/", `/${version}/`);
   } else if (RegExp(/^\/[^\.]*$/).test(olduri)) {
     newuri = `/${version}/index.html`;
