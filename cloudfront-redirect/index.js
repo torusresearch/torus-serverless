@@ -18,7 +18,7 @@ exports.handler = (event, context, callback) => {
   // if uri is like /wallet or /wallet/ , then return app.tor.us/${version}/index.html ^\/[^\.]*$
   // if uri is like /, then return app.tor.us/${version}/index.html app\.tor\.us\/$
   let newuri;
-  if (RegExp(/^\/v[0-9][0-9]*\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG)$/).test(olduri)) {
+  if (RegExp(/^\/v[0-9][0-9]*\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json)$/).test(olduri)) {
     newuri = olduri;
   } else if (RegExp(/^\/v[0-9][0-9]*\/[^\.]*$/).test(olduri)) {
     const secondIndex = olduri.indexOf("/", 1);
