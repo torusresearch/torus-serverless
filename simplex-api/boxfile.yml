@@ -1,0 +1,34 @@
+run.config:
+  engine: nodejs
+  engine.config:
+    runtime: nodejs-8.9
+    dep_manager: npm
+  extra_packages:
+    - bash
+  cache_dirs:
+    - api/node_modules
+    - frontend/node_modules
+  extra_steps:
+    - cd api && npm install
+    - cd api && npm run build
+    - cd frontend && npm install
+    - cd frontend && npm run build
+
+data.mongodb:
+  image: nanobox/mongodb:3.4
+
+web.api:
+  start:
+    - bash -c 'cd api && npm run prod'
+  routes:
+    - 'api:/'
+  cron:
+    - id: simplex-events
+      schedule: '* * * * *'
+      command: bash -c 'cd api && npm run eventsProd'
+
+web.frontend:
+  start:
+    - bash -c 'cd frontend && npm run prod'
+  routes:
+    - '/'

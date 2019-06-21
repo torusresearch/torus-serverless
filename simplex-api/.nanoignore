@@ -1,0 +1,13 @@
+api/node_modules/
+api/src/
+api/test/
+api/.babelrc
+
+frontend/build/
+frontend/config/
+frontend/node_modules/
+frontend/src/
+frontend/.babelrc
+frontend/.editorconfig
+frontend/.eslintignore
+frontend/.postcssrc.js
