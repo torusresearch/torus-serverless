@@ -6,7 +6,7 @@ import Order from './schema'
 import EventSchema from './event_schema'
 let connect = () => {
   return new Promise((resolve, reject) => {
-    mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name, { useNewUrlParser: true })
+    mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
     var db = mongoose.connection
     db.once('error', (error) => {
       reject(error)
