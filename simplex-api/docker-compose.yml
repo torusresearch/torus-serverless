@@ -19,14 +19,14 @@ services:
       - DATA_MONGODB_HOST=mongo_db
     links:
       - mongo_db
-  frontend:
-    container_name: frontend
-    image: simplex-frontend
-    env_file:
-      - .env
-    depends_on:
-      - mongo_db
-      - api
-    ports:
-      - "3000:3000/tcp"
-    command: npm run prod
+  # frontend:
+  #   container_name: frontend
+  #   image: simplex-frontend
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - mongo_db
+  #     - api
+  #   ports:
+  #     - "3000:3000/tcp"
+  #   command: npm run prod

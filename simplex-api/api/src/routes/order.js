@@ -12,7 +12,8 @@ import {
 } from '../config'
 import {
   getOrderById,
-  findAndUpdate
+  findAndUpdate,
+  Order
 } from '../mangodb'
 
 import {
@@ -102,6 +103,19 @@ let schema = {
 }
 let validator = Validator(schema)
 
+let querySchema = {
+  public_address: {
+    type: String,
+    required: true,
+    use: {
+      validateAddress
+    },
+    message: 'public address is required and must be a valid BTC or ETH address'
+  }
+}
+
+let queryValidator = Validator(querySchema)
+
 export default (app) => {
   app.post('/order', sourceValidate(), (req, res) => {
     try {
@@ -153,7 +167,8 @@ export default (app) => {
           findAndUpdate(userId, {
             payment_id: paymentId,
             order_id: orderId,
-            status: simplex.status.sentToSimplex
+            status: simplex.status.sentToSimplex,
+            public_address: reqObj.transaction_details.payment_details.destination_wallet.address
           }).catch((err) => {
             logger.error('findAndUpdate catch error')
             logger.error(err)
@@ -191,6 +206,35 @@ export default (app) => {
           logger.error('getOrderById catch error')
           logger.error(err)
           response.error(res, 'Invalid userId')
+        })
+      }
+    } catch (e) {
+      logger.error(e)
+    }
+  })
+
+  app.get('/pastorders', sourceValidate(), (req, res) => {
+    try {
+      let errors = queryValidator.validate(req.query)
+      validationErrors(errors)
+      if (env.mode !== 'development' && req.recaptcha.error) {
+        logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
+        logger.error(errors)
+        logger.error(req.recaptcha.error)
+        response.error(res, req.recaptcha.error)
+      } else if (errors.length) {
+        logger.error('Validation Error')
+        logger.error(errors)
+        response.error(res, errors.map(_err => _err.message))
+      } else {
+        let publicAddress = req.query.public_address
+        Order.find({ public_address: publicAddress }).then((orderList) => {
+          debugResponse(orderList)
+          response.success(res, orderList)
+        }).catch((err) => {
+          logger.error('public address order find catch error')
+          logger.error(err)
+          response.error(res, 'Error occured')
         })
       }
     } catch (e) {
