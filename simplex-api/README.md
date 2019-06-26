@@ -1,6 +1,6 @@
 # Simplex backend API
 
-Full backend api to integrate simplex crypto api powered by nanobox
+Full backend api to integrate simplex crypto api
 
 ## Getting Started
 
@@ -26,7 +26,6 @@ ANDROID_REFERER=
 ```
 
 ### Installing
-Refer to [Install nanobox](https://docs.nanobox.io/install/) for instructions on how to install nanobox
 ```
 npm install
 ```
@@ -37,18 +36,16 @@ npm install
 npm run test
 ```
 
-## Deployment
-
-```
-nanobox deploy
-```
-
 ## Deploy in local machine
+build local image in api folder using
+```
+docker build . -t simplex-api
+```
+then, in the main folder
 
 ```
-nanobox deploy dry-run
+docker-compose up
 ```
-
 
 ## External APIs
 
@@ -117,7 +114,6 @@ getQuote
 
 * [ExpressJS](https://expressjs.com/) - The web framework
 * [Mocha](https://mochajs.org/) - The testing framework
-* [Nanobox](http://www.nanobox.io/) - The deployment framework
 
 ## License
 
