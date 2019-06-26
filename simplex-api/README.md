@@ -30,11 +30,6 @@ ANDROID_REFERER=
 npm install
 ```
 Please refer to [docker](docker.com) on installation of docker and docker-compose
-## Running the tests
-
-```
-npm run test
-```
 
 ## Deploy in local machine
 build local image in api folder using
@@ -45,6 +40,12 @@ then, in the main folder
 
 ```
 docker-compose up
+```
+
+## Running the tests
+First, deploy in local machine to have mongodb running. Then,
+```
+npm run test
 ```
 
 ## External APIs
