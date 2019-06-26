@@ -29,7 +29,7 @@ ANDROID_REFERER=
 ```
 npm install
 ```
-
+Please refer to [docker](docker.com) on installation of docker and docker-compose
 ## Running the tests
 
 ```
