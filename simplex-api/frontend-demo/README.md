@@ -1,6 +1,16 @@
-# mew-simplex-frontend
+# simplex-frontend ** FOR DEMO PURPOSES ONLY **
 
-> A Vue.js project
+This package is not used in production. It is used for testing purposes only.
+For live versions of api running, please refer to the following environments
+
+> [Production](https://app.tor.us/wallet/topup)
+> [Staging](https://staging.tor.us/wallet/topup)
+> [Testing/Dev](https://testing.tor.us/wallet/topup)
+> Local Build: clone https://github.com/torusresearch/torus-website and follow the instructions there
+
+
+A Vue.js project
+
 
 ## Build Setup
 
