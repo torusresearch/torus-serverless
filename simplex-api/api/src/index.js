@@ -16,6 +16,7 @@ let app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
+app.set('trust proxy')
 routes(app)
 dbConnect().then(() => {
   logger.info(`mangodb running on port: ${mangodb.host}:${mangodb.port}`)

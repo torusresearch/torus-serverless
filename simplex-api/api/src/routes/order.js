@@ -181,7 +181,7 @@ export default (app) => {
                 payment_post_url: simplex.paymentEP.replace(/\u200B/g, ''),
                 version: simplex.apiVersion,
                 partner: simplex.walletID,
-                return_url: 'https://app.tor.us',
+                return_url: 'https://app.tor.us/wallet/history',
                 quote_id: quoteId,
                 payment_id: paymentId,
                 user_id: userId,
