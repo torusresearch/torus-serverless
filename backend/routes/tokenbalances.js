@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
   const { errors, isValid } = validateTokenBalancesInput(req.query);
   if (!isValid) {
     logger.warn("Invalid inputs", errors);
-    return res.status(400).json(errors);
+    return res.status(400).json({ error: errors, success: false });
   }
   globalCounter++;
   const selectedApiKey = API_KEYS[globalCounter];
@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
     .then(response => {
       const { status, data } = response;
       const balances = {};
-      if (status === 200) {
+      if (status >= 200 && status < 400) {
         for (let index = 0; index < data.result.length; index++) {
           const { tokenSymbol, contractAddress, tokenName, from, tokenDecimal, value } = data.result[index];
           balances[tokenSymbol] = balances[tokenSymbol]
@@ -65,12 +65,12 @@ router.get("/", async (req, res) => {
         Object.keys(balances).map(item => {
           if (balances[item].balance > 0) finalBalances.push({ ...balances[item], balance: balances[item].balance });
         });
-        res.status(200).json(finalBalances);
+        res.status(200).json({ data: finalBalances, success: true });
       }
     })
     .catch(err => {
       logger.error("etherscan api failed", err);
-      return res.status(500).json({ error: err });
+      return res.status(500).json({ error: err, success: false });
     });
 });
 

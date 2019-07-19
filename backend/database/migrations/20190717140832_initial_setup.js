@@ -34,9 +34,28 @@ exports.up = function(knex) {
       table.string("network", 255).notNullable();
       table.string("transaction_hash", 255).notNullable();
       table.unique(["transaction_hash", "network"]);
+    })
+    .createTable("signin", function(table) {
+      table.increments("id");
+      table
+        .timestamp("created_at")
+        .notNullable()
+        .defaultTo(knex.fn.now());
+      table
+        .timestamp("updated_at")
+        .notNullable()
+        .defaultTo(knex.fn.now());
+      table
+        .string("public_address", 255)
+        .notNullable()
+        .unique();
+      table.string("message", 255).notNullable();
     });
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable("transactions").dropTable("user");
+  return knex.schema
+    .dropTable("signin")
+    .dropTable("transactions")
+    .dropTable("user");
 };
