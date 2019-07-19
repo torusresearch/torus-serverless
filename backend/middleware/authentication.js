@@ -1,14 +1,32 @@
-const express = require("express");
-const router = express.Router();
+const createLogger = require("logging").default;
 
-function auth(req, res, next) {
-    jwt.verify(req.body.token, "i am another string", function(err, decoded) {
-      if (err) { res.send(500, { error: "Failed to authenticate token."}); }
-      else {
-        req.user = decoded.user;
-        next();
-      };
-    });
+const logger = createLogger("authentication - middleware.js");
+
+const pify = require("pify");
+let jwt = require("jsonwebtoken");
+jwt = pify(jwt);
+
+const fs = require("fs");
+const path = require("path");
+const jwtPublicKey = fs.readFileSync(path.resolve(__dirname, "../keys/jwtRS256.key.pub"));
+
+async function auth(req, res, next) {
+  try {
+    const header = req.headers["authorization"];
+    if (header) {
+      const bearer = header.split(" ");
+      const token = bearer[1];
+      const decoded = await jwt.verify(token, jwtPublicKey, { ignoreExpiration: false, algorithm: "RS256" });
+      req.public_address = decoded.public_address;
+      next();
+    } else {
+      logger.warn("Failed to authenticate", error);
+      res.status(401).json({ error: "Missing authorization header", success: false });
+    }
+  } catch (error) {
+    logger.warn("Failed to authenticate", error);
+    res.status(401).json({ error: "Failed to authenticate token", success: false });
+  }
 }
 
-module.exports = router;
+module.exports = auth;

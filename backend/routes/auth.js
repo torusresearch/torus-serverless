@@ -68,7 +68,7 @@ router.post("/verify", async (req, res) => {
       if (recoveredAddress === public_address.toLowerCase()) {
         // If the signature matches the owner supplied, create a
         // JSON web token for the owner that expires in 24 hours.
-        var token = await jwt.sign({ user: public_address }, jwtPrivateKey, { expiresIn: "1d", algorithm: "RS256" });
+        var token = await jwt.sign({ user: public_address }, jwtPrivateKey, { expiresIn: "6h", algorithm: "RS256" });
         res.status(200).json({ success: true, token: token });
       } else {
         res.status(401).json({ error: "Signature did not match", success: false });
