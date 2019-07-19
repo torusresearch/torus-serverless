@@ -9,7 +9,7 @@ module.exports = validateAuthVerifyInput = data => {
   data.signed_message = !isEmpty(data.signed_message) ? data.signed_message : "";
 
   if (validator.isEmpty(data.public_address)) {
-    errors.public_address = "public_address address is required";
+    errors.public_address = "public_address is required";
   }
 
   if (validator.isEmpty(data.signed_message)) {

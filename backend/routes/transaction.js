@@ -29,17 +29,12 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const {
-      network,
-      created_at,
-      from: fromAddress,
-      to,
-      total_amount,
-      currency_amount,
-      selected_currency,
-      status,
-      transaction_hash
-    } = req.body || {};
+    const { public_address } = req;
+    const { network, created_at, from: fromAddress, to, total_amount, currency_amount, selected_currency, status, transaction_hash } = req.body || {};
+    if (public_address !== fromAddress) {
+      logger.warn("invalid person posting transaction");
+      return res.status(403).json({ error: "You can only post transactions about yourself", success: false });
+    }
     const result = await knex("transactions").where({ network: network, transaction_hash: transaction_hash });
     if (result.length === 0) {
       await knex("transactions").insert({
@@ -71,18 +66,13 @@ router.put("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const {
-      id,
-      created_at,
-      from: fromAddress,
-      to,
-      total_amount,
-      currency_amount,
-      selected_currency,
-      status,
-      network,
-      transaction_hash
-    } = req.body || {};
+    const { public_address } = req;
+    const { id, created_at, from: fromAddress, to, total_amount, currency_amount, selected_currency, status, network, transaction_hash } =
+      req.body || {};
+    if (public_address !== fromAddress) {
+      logger.warn("invalid person putting transaction");
+      return res.status(403).json({ error: "You can only post transactions about yourself", success: false });
+    }
     const result = await knex("transactions").where({ id: id });
     if (result.length > 0) {
       await knex("transactions")
@@ -116,9 +106,14 @@ router.patch("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
+    const { public_address } = req;
     const { id, status } = req.body || {};
     const objectId = await knex("transactions").where({ id: id });
     if (objectId.length > 0) {
+      if (objectId[0].from !== public_address) {
+        logger.warn("invalid person patching transaction");
+        return res.status(403).json({ error: "You can only patch transactions about yourself", success: false });
+      }
       await knex("transactions")
         .where({ id: id })
         .update({

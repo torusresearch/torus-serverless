@@ -8,7 +8,7 @@ module.exports = validateAuthInput = data => {
   data.public_address = !isEmpty(data.public_address) ? data.public_address : "";
 
   if (validator.isEmpty(data.public_address)) {
-    errors.public_address = "public_address address is required";
+    errors.public_address = "public_address is required";
   }
 
   if (data.public_address && !isAddress(data.public_address)) {
