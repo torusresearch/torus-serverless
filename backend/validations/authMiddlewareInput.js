@@ -2,7 +2,7 @@ const validator = require("validator");
 const isEmpty = require("./isEmpty");
 const { isAddress } = require("web3-utils");
 
-module.exports = validateGetTransactionInput = data => {
+module.exports = validateAuthMiddlewareInput = data => {
   let errors = {};
 
   data.public_address = !isEmpty(data.public_address) ? data.public_address : "";

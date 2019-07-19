@@ -5,21 +5,16 @@ const createLogger = require("logging").default;
 
 const logger = createLogger("user.js");
 
-const validateGetUserInput = require("../validations/getUserInput");
 const validatePostUserInput = require("../validations/postUserInput");
 const validatePatchUserInput = require("../validations/patchUserInput");
 
 router.get("/", async (req, res) => {
-  const { errors, isValid } = validateGetUserInput(req.query);
-  if (!isValid) {
-    logger.warn("Invalid inputs", errors);
-    return res.status(400).json({ error: errors, success: false });
-  }
   try {
-    const p1 = knex("user").where({ public_address: req.query.public_address });
+    const { public_address } = req;
+    const p1 = knex("user").where({ public_address: public_address });
     const p2 = knex("transactions")
-      .where({ from: req.query.public_address })
-      .orWhere({ to: req.query.public_address });
+      .where({ from: public_address })
+      .orWhere({ to: public_address });
     const results = await Promise.all([p1, p2]);
     if (results[0].length > 0) {
       const user = results[0][0];
@@ -41,11 +36,13 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const result = await knex("user").where({ public_address: req.body.public_address });
+    const { public_address } = req;
+    const { default_currency } = req.body || {};
+    const result = await knex("user").where({ public_address: public_address });
     if (result.length === 0) {
       await knex("user").insert({
-        public_address: req.body.public_address,
-        default_currency: req.body.default_currency,
+        public_address: public_address,
+        default_currency: default_currency,
         is_new: false
       });
       res.status(201).json({ success: true });
@@ -66,12 +63,14 @@ router.patch("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const objectId = await knex("user").where({ public_address: req.body.public_address });
+    const { public_address } = req;
+    const { default_currency } = req.body || {};
+    const objectId = await knex("user").where({ public_address: public_address });
     if (objectId.length > 0) {
       await knex("user")
-        .where({ public_address: req.body.public_address })
+        .where({ public_address: public_address })
         .update({
-          default_currency: req.body.default_currency
+          default_currency: default_currency
         });
       res.status(201).json({ success: true });
     } else {

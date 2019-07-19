@@ -5,6 +5,8 @@ const createLogger = require("logging").default;
 
 const logger = createLogger("auth.js");
 
+const { toChecksumAddress } = require("web3-utils");
+
 const pify = require("pify");
 let jwt = require("jsonwebtoken");
 jwt = pify(jwt);
@@ -68,7 +70,8 @@ router.post("/verify", async (req, res) => {
       if (recoveredAddress === public_address.toLowerCase()) {
         // If the signature matches the owner supplied, create a
         // JSON web token for the owner that expires in 24 hours.
-        var token = await jwt.sign({ user: public_address }, jwtPrivateKey, { expiresIn: "6h", algorithm: "RS256" });
+        const finalAddress = toChecksumAddress(public_address);
+        var token = await jwt.sign({ public_address: finalAddress }, jwtPrivateKey, { expiresIn: "6h", algorithm: "RS256" });
         res.status(200).json({ success: true, token: token });
       } else {
         res.status(401).json({ error: "Signature did not match", success: false });

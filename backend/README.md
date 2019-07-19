@@ -21,29 +21,7 @@ In the frontend, make the user sign a personal message once you receive the priv
 In backend, call /authenticate api
 
 Middleware to verify the jwt
-```js
-function auth(req, res, next) {
-  jwt.verify(req.body.token, ‘i am another string’, function(err, decoded) {
-    if (err) { res.send(500, { error: ‘Failed to authenticate token.’}); }
-    else {
-      req.user = decoded.user;
-      next();
-    };
-  });
-}
-```
 
 All routes should be of the following standard
-```js
-app.post(‘/UpdateData’, auth, Routes.UpdateData);
-```
 
 Update data code
-```js
-function UpdateData(req, res) {
-  // Only use the user that was set in req by auth middleware!
-  var user = req.user;
-  updateYourData(user, req.body.data);
-  ...
-}
-```

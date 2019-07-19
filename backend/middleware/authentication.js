@@ -2,6 +2,8 @@ const createLogger = require("logging").default;
 
 const logger = createLogger("authentication - middleware.js");
 
+const validateAuthMiddlewareInput = require("../validations/authMiddlewareInput");
+
 const pify = require("pify");
 let jwt = require("jsonwebtoken");
 jwt = pify(jwt);
@@ -18,6 +20,11 @@ async function auth(req, res, next) {
       const token = bearer[1];
       const decoded = await jwt.verify(token, jwtPublicKey, { ignoreExpiration: false, algorithm: "RS256" });
       req.public_address = decoded.public_address;
+      const { errors, isValid } = validateAuthMiddlewareInput(req);
+      if (!isValid) {
+        logger.warn("Invalid inputs", errors);
+        return res.status(400).json({ error: errors, success: false });
+      }
       next();
     } else {
       logger.warn("Failed to authenticate", error);

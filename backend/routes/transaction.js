@@ -5,21 +5,16 @@ const createLogger = require("logging").default;
 
 const logger = createLogger("transaction.js");
 
-const validateGetTransactionInput = require("../validations/getTransactionInput");
 const validatePostTransactionInput = require("../validations/postTransactionInput");
 const validatePatchTransactionInput = require("../validations/patchTransactionInput");
 const validatePutTransactionInput = require("../validations/putTransactionInput");
 
 router.get("/", async (req, res) => {
-  const { errors, isValid } = validateGetTransactionInput(req.query);
-  if (!isValid) {
-    logger.warn("Invalid inputs", errors);
-    return res.status(400).json({ error: errors, success: false });
-  }
   try {
+    const { public_address } = req;
     const user = await knex("transactions")
-      .where({ from: req.query.public_address })
-      .orWhere({ to: req.query.public_address });
+      .where({ from: public_address })
+      .orWhere({ to: public_address });
     res.json({ data: user, success: true });
   } catch (error) {
     logger.error("unable to give out transaction details", error);
@@ -34,18 +29,29 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const result = await knex("transactions").where({ network: req.body.network, transaction_hash: req.body.transaction_hash });
+    const {
+      network,
+      created_at,
+      from: fromAddress,
+      to,
+      total_amount,
+      currency_amount,
+      selected_currency,
+      status,
+      transaction_hash
+    } = req.body || {};
+    const result = await knex("transactions").where({ network: network, transaction_hash: transaction_hash });
     if (result.length === 0) {
       await knex("transactions").insert({
-        created_at: req.body.created_at,
-        from: req.body.from,
-        to: req.body.to,
-        total_amount: req.body.total_amount,
-        currency_amount: req.body.currency_amount,
-        selected_currency: req.body.selected_currency,
-        status: req.body.status,
-        network: req.body.network,
-        transaction_hash: req.body.transaction_hash
+        created_at: created_at,
+        from: fromAddress,
+        to: to,
+        total_amount: total_amount,
+        currency_amount: currency_amount,
+        selected_currency: selected_currency,
+        status: status,
+        network: network,
+        transaction_hash: transaction_hash
       });
       res.status(201).json({ success: true });
     } else {
@@ -65,20 +71,32 @@ router.put("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const result = await knex("transactions").where({ id: req.body.id });
+    const {
+      id,
+      created_at,
+      from: fromAddress,
+      to,
+      total_amount,
+      currency_amount,
+      selected_currency,
+      status,
+      network,
+      transaction_hash
+    } = req.body || {};
+    const result = await knex("transactions").where({ id: id });
     if (result.length > 0) {
       await knex("transactions")
-        .where({ id: req.body.id })
+        .where({ id: id })
         .update({
-          created_at: req.body.created_at,
-          from: req.body.from,
-          to: req.body.to,
-          total_amount: req.body.total_amount,
-          currency_amount: req.body.currency_amount,
-          selected_currency: req.body.selected_currency,
-          status: req.body.status,
-          network: req.body.network,
-          transaction_hash: req.body.transaction_hash
+          created_at: created_at,
+          from: fromAddress,
+          to: to,
+          total_amount: total_amount,
+          currency_amount: currency_amount,
+          selected_currency: selected_currency,
+          status: status,
+          network: network,
+          transaction_hash: transaction_hash
         });
       res.status(201).json({ success: true });
     } else {
@@ -98,12 +116,13 @@ router.patch("/", async (req, res) => {
     return res.status(400).json({ error: errors, success: false });
   }
   try {
-    const objectId = await knex("transactions").where({ id: req.body.id });
+    const { id, status } = req.body || {};
+    const objectId = await knex("transactions").where({ id: id });
     if (objectId.length > 0) {
       await knex("transactions")
-        .where({ id: req.body.id })
+        .where({ id: id })
         .update({
-          status: req.body.status
+          status: status
         });
       res.status(201).json({ success: true });
     } else {

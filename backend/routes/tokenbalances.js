@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios").default;
 const createLogger = require("logging").default;
-const validateTokenBalancesInput = require("../validations/tokenBalancesInput");
 /*
     We use etherscan keys to get token transfer tx's for each user
     Etherscan API is rate limited to 5 txps
@@ -27,18 +26,13 @@ const API_KEYS = process.env.API_KEYS.split(",");
 let globalCounter = -1; // read top
 
 router.get("/", async (req, res) => {
-  const { errors, isValid } = validateTokenBalancesInput(req.query);
-  if (!isValid) {
-    logger.warn("Invalid inputs", errors);
-    return res.status(400).json({ error: errors, success: false });
-  }
   globalCounter++;
   const selectedApiKey = API_KEYS[globalCounter];
   if (globalCounter === API_KEYS.length - 1) globalCounter = -1;
-  const { address } = req.query;
+  const { public_address } = req;
   axios
     .get(
-      `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=${selectedApiKey}`,
+      `https://api.etherscan.io/api?module=account&action=tokentx&address=${public_address}&startblock=0&endblock=999999999&sort=asc&apikey=${selectedApiKey}`,
       {
         headers: {
           "Content-Type": "application/json; charset=utf-8"
@@ -55,7 +49,7 @@ router.get("/", async (req, res) => {
             ? balances[tokenSymbol]
             : { balance: 0, name: "", ticker: "", contractAddress: "", tokenDecimal: 0 };
           const finalValue = parseFloat(value) / 10 ** parseInt(tokenDecimal, 10);
-          balances[tokenSymbol].balance += from === address ? -finalValue : +finalValue;
+          balances[tokenSymbol].balance += from === public_address ? -finalValue : +finalValue;
           balances[tokenSymbol].name = tokenName;
           balances[tokenSymbol].ticker = tokenSymbol;
           balances[tokenSymbol].contractAddress = contractAddress;
