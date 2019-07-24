@@ -11,7 +11,7 @@ RUN node -v && npm -v
 WORKDIR /api
 
 COPY . /api
-RUN npm install
+RUN npm ci
 RUN npm run build
 EXPOSE 8080/tcp
 
