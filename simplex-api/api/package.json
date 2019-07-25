@@ -8,7 +8,7 @@
         "start": "npm run build && node dist/index.js",
         "prod": "node dist/index.js",
         "events": "npm run build && node dist/simplex_events/index.js",
-        "eventsProd": "node dist/simplex_events/",
+        "eventsProd": "node dist/simplex_events/index.js",
         "dev": "env NODE_ENV=development nodemon --exec npm start",
         "test": "npm run lint && env NODE_ENV=development mocha --exit --require @babel/register test/*",
         "lint": "standard --fix 'src/**/*.js'"
@@ -47,11 +47,12 @@
     "devDependencies": {
         "@babel/cli": "^7.5.5",
         "@babel/core": "^7.5.5",
-        "@babel/register": "^7.5.5",
         "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
         "@babel/preset-env": "^7.5.5",
+        "@babel/register": "^7.5.5",
         "chai": "^4.2.0",
         "mocha": "^6.2.0",
+        "node-cron": "^2.0.3",
         "nodemon": "^1.19.1",
         "rimraf": "^2.6.3",
         "standard": "^13.1.0",
