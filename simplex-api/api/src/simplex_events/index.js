@@ -8,10 +8,9 @@ cron.schedule('* * * * *', function () {
   logger.info('Starting cron job')
   getEvents()
     .then(() => {
-      process.exit(0)
+      logger.info('Ended sprint')
     })
     .catch(_error => {
       logger.error(_error)
-      process.exit(1)
     })
 })
