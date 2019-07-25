@@ -1,9 +1,9 @@
 require('dotenv').config()
 
-let network = {
+const network = {
   port: process.env.PORT || 8080
 }
-let simplex = {
+const simplex = {
   walletID: process.env.WALLET_ID || '',
   quoteEP: process.env.QUOTE_EP || '',
   orderEP: process.env.ORDER_EP || '',
@@ -22,16 +22,16 @@ let simplex = {
 
   }
 }
-let mangodb = {
+const mangodb = {
   host: process.env.DATA_MONGODB_HOST || 'localhost',
   port: 27017,
   name: 'gonano'
 }
-let recaptcha = {
+const recaptcha = {
   siteKey: process.env.RECAPTCHA_SITE_KEY || '',
   secretKey: process.env.RECAPTCHA_SECRET_KEY || ''
 }
-let env = {
+const env = {
   mode: process.env.NODE_ENV || 'production',
   dev: {
     ip: '141.145.165.137',
@@ -40,7 +40,7 @@ let env = {
   }
 }
 
-let productValidation = {
+const productValidation = {
   specialWebOrigins: process.env.SPECIAL_WEB_ORIGINS ? process.env.SPECIAL_WEB_ORIGINS.split(' ') : []
 }
 

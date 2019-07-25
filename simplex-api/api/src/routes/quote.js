@@ -23,7 +23,7 @@ const debugRequest = debugLogger('request:routes-quote')
 const debugResponse = debugLogger('response:routes-quote')
 const validationErrors = debugLogger('errors:validation')
 
-let schema = {
+const schema = {
   digital_currency: {
     type: String,
     required: true,
@@ -49,20 +49,20 @@ let schema = {
   }
 }
 
-let validator = Validator(schema)
+const validator = Validator(schema)
 export default (app) => {
   app.post('/quote', sourceValidate(), (req, res) => {
-    let errors = validator.validate(req.body)
+    const errors = validator.validate(req.body)
     validationErrors(errors)
     if (errors.length) {
       logger.error(errors)
       response.error(res, errors.map(_err => _err.message))
     } else {
-      let newUserId = uuidv4()
-      let reqObj = Object.assign(req.body, {
-        'end_user_id': newUserId,
-        'wallet_id': simplex.walletID,
-        'client_ip': env.mode === 'development' ? env.dev.ip : getIP(req)
+      const newUserId = uuidv4()
+      const reqObj = Object.assign(req.body, {
+        end_user_id: newUserId,
+        wallet_id: simplex.walletID,
+        client_ip: env.mode === 'development' ? env.dev.ip : getIP(req)
       })
       debugRequest(reqObj)
       getQuote(reqObj).then((result) => {

@@ -17,23 +17,23 @@ const logger = createLogger('simplex_events/retrieveEvents.js')
 const debugRequest = debugLogger('calls:Events')
 
 connect().then(() => {
-  logger.info(`mangodb running on port: ${mangodb.host}:${mangodb.port}`)
+  logger.info(`events mangodb running on port: ${mangodb.host}:${mangodb.port}`)
 }).catch((err) => {
   logger.error(`mangodb error: ${err}`)
 })
 
-let getEvents = () => {
+const getEvents = () => {
   return new Promise((resolve, reject) => {
-    let options = {
+    const options = {
       url: simplex.eventEP,
       headers: {
-        'Authorization': 'ApiKey ' + simplex.apiKey
+        Authorization: 'ApiKey ' + simplex.apiKey
       },
       method: 'get',
       json: true
     }
-    let retrieveCallback = (error, response, body) => {
-      console.log(body)
+    const retrieveCallback = (error, response, body) => {
+      logger.info(body, 'events pending')
       if (!error && response.statusCode === 200) {
         eachOfSeries(body.events, processEvent, (error) => {
           if (error) {
@@ -62,10 +62,10 @@ function updateItem (recordItem, deleteCallback) {
   }).catch((err) => {
     logger.error(err)
   })
-  let options = {
+  const options = {
     url: `${simplex.eventEP}/${recordItem.event_id}`,
     headers: {
-      'Authorization': 'ApiKey ' + simplex.apiKey
+      Authorization: 'ApiKey ' + simplex.apiKey
     },
     method: 'DELETE',
     json: true

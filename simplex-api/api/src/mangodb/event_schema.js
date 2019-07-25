@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import timestamp from 'mongoose-timestamp'
-let Schema = mongoose.Schema
+const Schema = mongoose.Schema
 
 var eventSchema = new Schema({
   event_id: {

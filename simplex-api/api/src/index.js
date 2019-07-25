@@ -12,7 +12,7 @@ import {
 } from './config'
 
 const logger = createLogger('index.js')
-let app = express()
+const app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -23,7 +23,7 @@ dbConnect().then(() => {
 }).catch((err) => {
   logger.error(`mangodb error: ${err}`)
 })
-let server = app.listen(network.port, () => {
+const server = app.listen(network.port, () => {
   logger.info(`app running on port: ${server.address().port}`)
 })
 export default server

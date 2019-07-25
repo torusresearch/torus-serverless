@@ -3,7 +3,7 @@ import timestamp from 'mongoose-timestamp'
 import {
   simplex
 } from '../config'
-let Schema = mongoose.Schema
+const Schema = mongoose.Schema
 
 var orderSchema = new Schema({
   user_id: {

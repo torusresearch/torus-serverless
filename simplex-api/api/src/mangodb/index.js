@@ -4,7 +4,7 @@ import {
 } from '../config'
 import Order from './schema'
 import EventSchema from './event_schema'
-let connect = () => {
+const connect = () => {
   return new Promise((resolve, reject) => {
     mongoose.connect('mongodb://' + mangodb.host + ':' + mangodb.port + '/' + mangodb.name, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
     var db = mongoose.connection
@@ -16,12 +16,12 @@ let connect = () => {
     })
   })
 }
-let getOrderById = (_userId) => {
+const getOrderById = (_userId) => {
   return Order.find({
     user_id: _userId
   })
 }
-let findAndUpdate = (_userId, _newVals) => {
+const findAndUpdate = (_userId, _newVals) => {
   return Order.findOneAndUpdate({
     user_id: _userId
   }, _newVals)

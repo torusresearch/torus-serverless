@@ -38,7 +38,7 @@ const validateAddress = val => {
   return maybeValid.length > 0
 }
 
-let schema = {
+const schema = {
   account_details: {
     app_end_user_id: {
       type: String,
@@ -101,9 +101,9 @@ let schema = {
     }
   }
 }
-let validator = Validator(schema)
+const validator = Validator(schema)
 
-let querySchema = {
+const querySchema = {
   public_address: {
     type: String,
     required: true,
@@ -114,12 +114,12 @@ let querySchema = {
   }
 }
 
-let queryValidator = Validator(querySchema)
+const queryValidator = Validator(querySchema)
 
 export default (app) => {
   app.post('/order', sourceValidate(), (req, res) => {
     try {
-      let errors = validator.validate(req.body)
+      const errors = validator.validate(req.body)
       validationErrors(errors)
       if (env.mode !== 'development' && req.recaptcha.error) {
         logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
@@ -131,15 +131,15 @@ export default (app) => {
         logger.error(errors)
         response.error(res, errors.map(_err => _err.message))
       } else {
-        let userId = req.body.account_details.app_end_user_id
+        const userId = req.body.account_details.app_end_user_id
         getOrderById(userId).then((savedOrder) => {
-          let quoteId = savedOrder[0].quote_id
-          let paymentId = uuidv4()
-          let orderId = uuidv4()
-          let acceptLanguage = env.mode === 'development' ? env.dev.accept_language : req.headers['accept-language']
-          let ip = env.mode === 'development' ? env.dev.ip : getIP(req)
-          let userAgent = env.mode === 'development' ? env.dev.user_agent : req.headers['user-agent']
-          let reqObj = {
+          const quoteId = savedOrder[0].quote_id
+          const paymentId = uuidv4()
+          const orderId = uuidv4()
+          const acceptLanguage = env.mode === 'development' ? env.dev.accept_language : req.headers['accept-language']
+          const ip = env.mode === 'development' ? env.dev.ip : getIP(req)
+          const userAgent = env.mode === 'development' ? env.dev.user_agent : req.headers['user-agent']
+          const reqObj = {
             account_details: {
               ...req.body.account_details,
               app_provider_id: simplex.walletID,
@@ -215,7 +215,7 @@ export default (app) => {
 
   app.get('/pastorders', sourceValidate(), (req, res) => {
     try {
-      let errors = queryValidator.validate(req.query)
+      const errors = queryValidator.validate(req.query)
       validationErrors(errors)
       if (env.mode !== 'development' && req.recaptcha.error) {
         logger.error('ERROR: env.mode !== \'development\' && req.recaptcha.error')
@@ -227,7 +227,7 @@ export default (app) => {
         logger.error(errors)
         response.error(res, errors.map(_err => _err.message))
       } else {
-        let publicAddress = req.query.public_address
+        const publicAddress = req.query.public_address
         Order.find({ public_address: publicAddress }).then((orderList) => {
           debugResponse(orderList)
           response.success(res, orderList)

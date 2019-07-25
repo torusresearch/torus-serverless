@@ -13,13 +13,13 @@ export default (body, path) => {
     var options = {
       url: path,
       headers: {
-        'Authorization': 'ApiKey ' + simplex.apiKey
+        Authorization: 'ApiKey ' + simplex.apiKey
       },
       body: body,
       method: 'post',
       json: true
     }
-    let callback = (error, response, body) => {
+    const callback = (error, response, body) => {
       debugRequest(body)
       if (!error && response.statusCode === 200) {
         resolve(body)
