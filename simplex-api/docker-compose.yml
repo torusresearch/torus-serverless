@@ -1,24 +1,15 @@
 version: '3'
 
-networks:
-  app-tier:
-    driver: bridge
-
 services:
   mongo_db:
-    container_name: mongo-db
     image: "bitnami/mongodb:latest"
     ports:
       - "27017:27017"
-    networks:
-      - app-tier
     volumes:
       - 'mongodb_data:/bitnami'
   api:
-    container_name: simplex-api
-    image: simplex-api
-    networks:
-      - app-tier
+    restart: on-failure
+    build: ./api/
     env_file:
       - .env
     depends_on:
