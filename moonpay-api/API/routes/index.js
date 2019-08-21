@@ -9,8 +9,8 @@
  * @const
  * @ignore
  */
-const express = require("express");
-const router = express.Router();
-const defaultRoute = require("./default");
-router.use("/", defaultRoute);
-module.exports = router;
+const express = require('express')
+const router = express.Router()
+const defaultRoute = require('./default')
+router.use('/', defaultRoute)
+module.exports = router

@@ -10,14 +10,14 @@
  * @ignore
  */
 
-const express = require("express");
+const express = require('express')
 
 /**
  * Express router to mount user related functions on.
  * @type {object}
  * @const
  */
-const router = express.Router();
+const router = express.Router()
 
 /**
  * Returns a welcome string
@@ -31,9 +31,9 @@ const router = express.Router();
  * fetch("/")
  * -> "Welcome to Torus moonpay-apis"
  */
-router.get("/", (req, res) => {
-  res.send("Welcome to Torus moonpay-apis");
-});
+router.get('/', (req, res) => {
+  res.send('Welcome to Torus moonpay-apis')
+})
 
 /**
  * Server health check
@@ -48,8 +48,8 @@ router.get("/", (req, res) => {
  * fetch("/health")
  * -> "Ok!"
  */
-router.get("/health", (req, res) => {
-  res.status(200).send("Ok!");
-});
+router.get('/health', (req, res) => {
+  res.status(200).send('Ok!')
+})
 
-module.exports = router;
+module.exports = router
