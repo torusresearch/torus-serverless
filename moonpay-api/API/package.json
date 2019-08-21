@@ -4,11 +4,7 @@
     "description": "Torus API to handle moonpay integration",
     "main": "index.js",
     "scripts": {
-        "build": "npm run lint && rimraf dist/ && babel ./src --out-dir dist/",
-        "start": "npm run build && node dist/index.js & npm run eventsProd",
-        "prod": "node dist/index.js",
-        "events": "npm run build && node dist/moonpay_events/index.js",
-        "eventsProd": "node dist/moonpay_events/index.js",
+        "start": "node index.js",
         "dev": "env NODE_ENV=development nodemon --exec npm start",
         "test": "npm run lint && env NODE_ENV=development mocha --exit --require @babel/register test/*",
         "lint": "standard --fix 'src/**/*.js'"
@@ -31,12 +27,15 @@
     "dependencies": {
         "async": "^3.1.0",
         "body-parser": "^1.19.0",
+        "compression": "^1.7.4",
         "cors": "^2.8.5",
         "debug": "^4.1.1",
         "dotenv": "^8.0.0",
         "express": "^4.17.1",
         "express-recaptcha": "^5.0.0",
+        "helmet": "^3.20.0",
         "logging": "^3.2.0",
+        "loglevel": "^1.6.3",
         "mongoose": "^5.6.6",
         "mongoose-timestamp": "^0.6.0",
         "request": "^2.88.0",
