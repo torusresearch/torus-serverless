@@ -7,7 +7,6 @@
         "start": "node index.js",
         "dev": "env NODE_ENV=development nodemon --exec npm start",
         "test": "cross-env NODE_ENV=development LOG_DEBUG=no mocha --exit",
-        
         "lint": "standard --fix 'src/**/*.js'"
     },
     "repository": {
@@ -37,7 +36,7 @@
         "helmet": "^3.20.0",
         "logging": "^3.2.0",
         "loglevel": "^1.6.3",
-        "mongoose": "^5.6.6",
+        "mongoose": "^5.6.10",
         "mongoose-timestamp": "^0.6.0",
         "request": "^2.88.0",
         "uuid": "^3.3.2",

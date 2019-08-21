@@ -19,6 +19,7 @@ const express = require('express')
  */
 const router = express.Router()
 const log = require("loglevel")
+const mongoose = require("mongoose")
 
 /** 
 * Creates a new transaction: Router validates the passed tx body and pushes it to the database table.
@@ -33,8 +34,9 @@ const log = require("loglevel")
 * fetch('/transaction', {method: POST}).send(body)
 * //{success: true}
 */
-router.post("/", async (req, res) => {
-  log.info(req);
+router.post("/", (req, res) => {
+  console.log(req.body);
+  return res.status(201).json({ success: true });
 });
 
 

@@ -16,10 +16,6 @@ services:
       - mongo_db
     ports:
       - "2040:2040"
-    environment:
-      - DATA_MONGODB_HOST=mongo_db
-    links:
-      - mongo_db
 
 volumes:
   mongodb_data:

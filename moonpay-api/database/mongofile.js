@@ -4,7 +4,7 @@ module.exports = {
   development: {
     client: "mongo",
     connection: {
-      host: process.env.MONGO_DB_HOST,
+      host: 'mongo_db',
       database: "moonpay",
       port: 27017,
       user: "",
