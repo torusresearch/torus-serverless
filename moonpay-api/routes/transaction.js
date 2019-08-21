@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
  * @example
  * // Set auth headers
  * fetch("/")
- * -> "Welcome to Torus moonpay-apis"
+ * -> "Welcome to Torus moonpay-apis /transaction"
  */
 router.get('/', (req, res) => {
   res.send('Welcome to Torus moonpay-apis /transaction')
