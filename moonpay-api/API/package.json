@@ -1,0 +1,61 @@
+{
+  "name": "moonpay-api",
+  "version": "0.0.1",
+  "description": "Torus API to handle moonpay integration",
+  "main": "index.js",
+  "scripts": {
+      "build": "npm run lint && rimraf dist/ && babel ./src --out-dir dist/",
+      "start": "npm run build && node dist/index.js & npm run eventsProd",
+      "prod": "node dist/index.js",
+      "events": "npm run build && node dist/moonpay_events/index.js",
+      "eventsProd": "node dist/moonpay_events/index.js",
+      "dev": "env NODE_ENV=development nodemon --exec npm start",
+      "test": "npm run lint && env NODE_ENV=development mocha --exit --require @babel/register test/*",
+      "lint": "standard --fix 'src/**/*.js'"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/torusresearch/torus-serverless.git"
+  },
+  "keywords": [
+      "moonpay",
+      "api",
+      "Torus"
+  ],
+  "author": "Shubham Rathi",
+  "license": "MIT",
+  "bugs": {
+      "url": "https://github.com/torusresearch/torus-serverless/issues"
+  },
+  "homepage": "https://github.com/torusresearch/torus-serverless#readme",
+  "dependencies": {
+      "async": "^3.1.0",
+      "body-parser": "^1.19.0",
+      "cors": "^2.8.5",
+      "debug": "^4.1.1",
+      "dotenv": "^8.0.0",
+      "express": "^4.17.1",
+      "express-recaptcha": "^5.0.0",
+      "logging": "^3.2.0",
+      "mongoose": "^5.6.6",
+      "mongoose-timestamp": "^0.6.0",
+      "request": "^2.88.0",
+      "uuid": "^3.3.2",
+      "validate": "^4.5.1",
+      "wallet-address-validator": "^0.2.4"
+  },
+  "devDependencies": {
+      "@babel/cli": "^7.5.5",
+      "@babel/core": "^7.5.5",
+      "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+      "@babel/preset-env": "^7.5.5",
+      "@babel/register": "^7.5.5",
+      "chai": "^4.2.0",
+      "mocha": "^6.2.0",
+      "node-cron": "^2.0.3",
+      "nodemon": "^1.19.1",
+      "rimraf": "^2.6.3",
+      "standard": "^13.1.0",
+      "supertest": "^4.0.2"
+  }
+}
