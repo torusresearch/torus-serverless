@@ -1,11 +1,13 @@
-FROM node:10.16.0-jessie
+FROM node:buster
 
 ENV NODE_OPTIONS --max-old-space-size=4096
 WORKDIR /api
 
-COPY . /api
+COPY package*.json ./
 RUN npm ci
+
+COPY . .
 RUN npm run build
 EXPOSE 8080/tcp
 
-CMD npm run start
+CMD ["npm", "start"]
