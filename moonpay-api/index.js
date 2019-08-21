@@ -34,7 +34,7 @@ switch (buildEnv) {
     log.disableAll()
     break
 }
-log.info('TORUS_BUILD_ENV', process.env.TORUS_BUILD_ENV)
+log.info('NODE_ENV', process.env.NODE_ENV)
 
 
 // setup app
