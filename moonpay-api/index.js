@@ -11,6 +11,10 @@ const cors = require('cors')
 const morgan = require('morgan')
 const log = require('loglevel')
 
+// Setup environment
+require('dotenv').config()
+
+
 // setup loglevel 
 // Loglevel init
 const buildEnv = process.env.NODE_ENV
@@ -36,12 +40,10 @@ switch (buildEnv) {
 }
 log.info('NODE_ENV', process.env.NODE_ENV)
 
+log.info(process.env.DATA_MONGODB_HOST, 'hi')
 
 // setup app
 const app = express()
-
-// Setup environment
-require('dotenv').config()
 
 // setup middleware
 const corsOptions = {
