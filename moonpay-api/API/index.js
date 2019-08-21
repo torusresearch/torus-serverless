@@ -1,5 +1,5 @@
 /**
- * @fileOverview Run an express server on 2030
+ * @fileOverview Run an express server on 2040
  * @author Shubham rathi
  * @requires NPM:express,helmet,compression,cors,morgan
  */
@@ -34,7 +34,7 @@ app.use(bodyParser.json()); // converts body to json
 const routes = require("./routes");
 app.use("/", routes);
 
-const port = process.env.PORT || 2030;
+const port = process.env.PORT || 2040;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
 
 module.exports = app; // For testing

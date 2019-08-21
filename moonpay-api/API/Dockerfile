@@ -6,6 +6,6 @@ WORKDIR /api
 COPY . /api
 RUN npm ci
 RUN npm run build
-EXPOSE 8080/tcp
+EXPOSE 2040/tcp
 
 CMD npm run start
