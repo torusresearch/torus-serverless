@@ -12,6 +12,7 @@ const morgan = require('morgan')
 const log = require('loglevel')
 const dbConfig = require('./database')
 const mongoose = require('mongoose')
+//const connectDB = require('./helpers/mongoUtil')
 
 // Setup environment
 require('dotenv').config()
@@ -62,14 +63,13 @@ app.use(bodyParser.json()) // converts body to json
 const routes = require('./routes')
 app.use('/', routes)
 
-// Initialise mongoose connection
-// url = process.env.DATA_MONGODB_HOST
+//Initialise mongoose connection
+//url = process.env.DATA_MONGODB_HOST
 url = "mongodb://" + dbConfig.connection.host + ":" + dbConfig.connection.port + "/" + dbConfig.connection.database
 mongoose
   .connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, reconnectTries: Number.MAX_VALUE, reconnectInterval: 500 })
   .then(() => log.info("mongo db connection - success"))
   .catch(err => log.error(err, "mongoose connection failed"));
-
 
 const port = process.env.PORT || 2040
 app.listen(port, () => console.log(`Server running on port: ${port}`))
