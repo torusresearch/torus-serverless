@@ -74,6 +74,7 @@ router.post("/", (req, res) => {
       "gbpRate": req.body.data.gbpRate
     })
     obj.save().then(doc=>{
+      console.log(doc);
       return res.status(201).json({ success: true , data: doc});
     }).catch(err => console.log(err))
   }catch(err){
