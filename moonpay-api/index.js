@@ -10,11 +10,16 @@ const compression = require('compression')
 const cors = require('cors')
 const morgan = require('morgan')
 const log = require('loglevel')
+const dbConfig = require('./database')
+const mongoose = require('mongoose')
+
+// Setup environment
+require('dotenv').config()
 
 // setup loglevel 
 // Loglevel init
 const buildEnv = process.env.NODE_ENV
-let loglevel
+let logLevel
 switch (buildEnv) {
   case 'staging':
     logLevel = 'info'
@@ -25,7 +30,7 @@ switch (buildEnv) {
     log.setDefaultLevel(logLevel)
     break
   case 'development':
-    let logLevel = 'debug'
+    logLevel = 'debug'
     log.setDefaultLevel(logLevel)
     break
   default:
@@ -34,14 +39,10 @@ switch (buildEnv) {
     log.disableAll()
     break
 }
-log.info('TORUS_BUILD_ENV', process.env.TORUS_BUILD_ENV)
-
+log.info('NODE_ENV', process.env.NODE_ENV)
 
 // setup app
 const app = express()
-
-// Setup environment
-require('dotenv').config()
 
 // setup middleware
 const corsOptions = {
@@ -60,6 +61,15 @@ app.use(bodyParser.json()) // converts body to json
 // bring all routes here
 const routes = require('./routes')
 app.use('/', routes)
+
+// Initialise mongoose connection
+// url = process.env.DATA_MONGODB_HOST
+url = "mongodb://" + dbConfig.connection.host + ":" + dbConfig.connection.port + "/" + dbConfig.connection.database
+mongoose
+  .connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, reconnectTries: Number.MAX_VALUE, reconnectInterval: 500 })
+  .then(() => log.info("mongo db connection - success"))
+  .catch(err => log.error(err, "mongoose connection failed"));
+
 
 const port = process.env.PORT || 2040
 app.listen(port, () => console.log(`Server running on port: ${port}`))

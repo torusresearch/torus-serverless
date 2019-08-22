@@ -12,5 +12,8 @@
 const express = require('express')
 const router = express.Router()
 const defaultRoute = require('./default')
+const transactionRoute = require('./transaction')
+
 router.use('/', defaultRoute)
+router.use('/transaction', transactionRoute);
 module.exports = router
