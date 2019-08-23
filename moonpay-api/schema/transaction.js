@@ -52,7 +52,6 @@ var transactionSchema = new Schema({
   },
   "cryptoTransactionId":{
     type:String,
-    required: true,
     default: null
   },
   "failureReason":{

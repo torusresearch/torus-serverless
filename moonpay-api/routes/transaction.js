@@ -1,22 +1,22 @@
 /**
- * Express Router for moonpay transactions
- * @author Shubham
- * @module Transactions
- */
+* Express Router for moonpay transactions
+* @author Shubham
+* @module Transactions
+*/
 
 /**
- * express module
- * @const
- * @ignore
- */
+* express module
+* @const
+* @ignore
+*/
 
 const express = require('express')
 
 /**
- * Express router to mount user related functions on.
- * @type {object}
- * @const
- */
+* Express router to mount user related functions on.
+* @type {object}
+* @const
+*/
 const router = express.Router()
 const log = require("loglevel")
 const mongoose = require("mongoose")
@@ -42,7 +42,7 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 */
 router.post("/", (req, res) => {
   log.info("req.body is", req.body);
-
+  
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
   //console.log(errors, isValid);
   if (!isValid) {
@@ -75,13 +75,26 @@ router.post("/", (req, res) => {
       "usdRate": req.body.data.usdRate,
       "gbpRate": req.body.data.gbpRate
     })
-    transaction.findOne({moonpayId: tx.moonpayId}, (err, tx) => {
-      console.log(tx);
-    })
-    tx.save().then(doc=>{
-      console.log(doc);
-      return res.status(201).json({ success: true , data: doc});
-    }).catch(err => console.log(err))
+    transaction.findOne({moonpayId: tx.moonpayId}, (err, doc) => {
+      if (err) { console.log(err); res.status(500).json({err: err})
+      if(doc == null ){
+        tx.save().then(doc=>{
+          console.log(doc);
+          return res.status(201).json({ success: true , data: doc});
+        }).catch(err => console.log(err))
+      }
+      else if(doc.moonpayId == tx.moonpayId){
+        for(key in doc){
+          doc[key] = tx[key]
+        }
+        doc.save(function(err){
+          if(err){ console.log(err); res.status(500).json({err: err})}
+          res.send(200).json({data: 'moonpay-transaction modified'})
+        })
+      }
+    }
+  })
+    
   }catch(err){
     console.log(err)
   }
@@ -89,17 +102,17 @@ router.post("/", (req, res) => {
 
 
 /**
- * Returns a welcome string
- * @name / GET
- * @function
- * @param {string} path relative express path
- * @param {callback} middleware express middleware
- * @returns {String} welcome strign
- * @example
- * // Set auth headers
- * fetch("/")
- * -> "Welcome to Torus moonpay-apis /transaction"
- */
+* Returns a welcome string
+* @name / GET
+* @function
+* @param {string} path relative express path
+* @param {callback} middleware express middleware
+* @returns {String} welcome strign
+* @example
+* // Set auth headers
+* fetch("/")
+* -> "Welcome to Torus moonpay-apis /transaction"
+*/
 router.get('/', (req, res) => {
   res.send('Welcome to Torus moonpay-apis /transaction')
 })
