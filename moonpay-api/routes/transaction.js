@@ -82,7 +82,7 @@ router.post("/", (req, res) => {
         console.log(err); 
         res.status(500).json({err: err})
       }
-      console.log("doc is", doc);
+      //console.log("doc is", doc);
       if(!doc){
         tx.save().then(doc=>{
           console.log(doc);
@@ -93,7 +93,7 @@ router.post("/", (req, res) => {
         for(key in doc){
           if(doc[key] != tx[key]){
             doc[key] = tx[key]
-            console.log("modifying :", doc[key], tx[key])
+            //console.log("modifying :", doc[key], tx[key])
           }
         }
         doc.save(function(err){
