@@ -5,7 +5,6 @@ var transactionSchema = new Schema({
   "moonpayId":{
     type: String,
     required: true,
-    unique: true
   },
   "public_address":{
     type: String,
