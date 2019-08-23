@@ -51,7 +51,7 @@ router.post("/", (req, res) => {
     return res.sendStatus(400).json({ error: errors, success: false });
   }
   try{
-    
+
     // Verify signature
     const signature = req.headers['moonpay-signature'];
     const time = signature.split(",")[0].split("t=")[1];
@@ -97,14 +97,14 @@ router.post("/", (req, res) => {
       // If not, create a new tx
       if(doc == null){
         tx.save().then(doc=>{
-          console.log("doc saved", doc);
+          console.log("new transaction created with status", doc.status );
           return res.status(201).json({ success: true});
         }).catch(err => console.log(err))
       }
       // If yes, then update the tx.
       else if(doc.moonpayId == tx.moonpayId){
         transaction.replaceOne(doc, tx)
-        console.log("doc modified with new data");
+        console.log("Transaction modified");
         return res.status(201).json({success: true})
       }
     })
