@@ -47,7 +47,7 @@ router.post("/", (req, res) => {
   console.log(errors, isValid);
   if (!isValid) {
     log.warn("Invalid inputs", errors);
-    return res.status(400).json({ error: errors, success: false });
+    return res.sendStatus(400).json({ error: errors, success: false });
   }
   try{
     const tx = new transaction({
@@ -80,13 +80,13 @@ router.post("/", (req, res) => {
     transaction.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
       if (err) { 
         console.log(err); 
-        res.status(500).json({err: err})
+        res.sendStatus(500).json({err: err})
       }
       //console.log("doc is", doc);
-      if(!doc){
+      if(doc == null){
         tx.save().then(doc=>{
           console.log(doc);
-          return res.status(201).json({ success: true , data: doc});
+          return res.sendStatus(201).json({ success: true , data: doc});
         }).catch(err => console.log(err))
       }
       else if(doc.moonpayId == tx.moonpayId){
@@ -97,8 +97,8 @@ router.post("/", (req, res) => {
           }
         }
         doc.save(function(err){
-          if(err){ console.log(err); res.status(500).json({err: err})}
-          res.send(200).json({data: 'moonpay-transaction modified'})
+          if(err){ console.log(err); res.sendStatus(500).json({err: err})}
+          res.sendStatus(200).json({data: 'moonpay-transaction modified'})
         })
       }
       
