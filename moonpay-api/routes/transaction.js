@@ -41,7 +41,7 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 * //{success: true}
 */
 router.post("/", (req, res) => {
-  log.info("req.body is", req.body);
+  log.info("req.body is", req.body, "current time is", new Date());
   
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
   //console.log(errors, isValid);
