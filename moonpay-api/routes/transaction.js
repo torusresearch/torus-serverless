@@ -90,12 +90,14 @@ router.post("/", (req, res) => {
         }).catch(err => console.log(err))
       }
       else if(doc.moonpayId == tx.moonpayId){
+        console.log("some document found")
         for(key in doc){
           if(doc[key] != tx[key]){
             doc[key] = tx[key]
-            //console.log("modifying :", doc[key], tx[key])
+            console.log("modifying :", doc[key], tx[key])
           }
         }
+        console.log("doc modified with new data");
         // doc.save(function(err){
         //   if(err){ console.log(err); res.sendStatus(500).json({err: err})}
         //   return res.sendStatus(200).json({data: 'moonpay-transaction modified'})
