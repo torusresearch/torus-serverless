@@ -77,7 +77,7 @@ router.post("/", (req, res) => {
       "gbpRate": req.body.data.gbpRate
     })
     console.log("moonpayId is", tx.moonpayId);
-    transaction.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
+    transaction.findOne({"moonpayId": tx.moonpayId}).lean().exec((err, doc) => {
       if (err) { 
         console.log(err); 
         return res.sendStatus(500).json({err: err})
@@ -91,7 +91,7 @@ router.post("/", (req, res) => {
       }
       else if(doc.moonpayId == tx.moonpayId){
         console.log("some document found")
-        console.log(typeof(doc));
+        console.log(doc);
         tx._id=doc._id;
 
         transaction.replaceOne(doc, tx)
