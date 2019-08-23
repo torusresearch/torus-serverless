@@ -40,7 +40,7 @@ switch (buildEnv) {
     log.disableAll()
     break
 }
-log.info('NODE_ENV', process.env.NODE_ENV)
+//log.info('NODE_ENV', process.env.NODE_ENV)
 
 // setup app
 const app = express()
@@ -66,12 +66,23 @@ app.use('/', routes)
 //Initialise mongoose connection
 //url = process.env.DATA_MONGODB_HOST
 url = "mongodb://" + dbConfig.connection.host + ":" + dbConfig.connection.port + "/" + dbConfig.connection.database
-mongoose
-  .connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, reconnectTries: Number.MAX_VALUE, reconnectInterval: 500 })
-  .then(() => log.info("mongo db connection - success"))
-  .catch(err => log.error(err, "mongoose connection failed"));
+connectionMongo();
+
+mongoose.connection.on("error", function(err){
+  if(err) console.log(err)
+
+  setTimeout(connectionMongo, 5000)
+})
 
 const port = process.env.PORT || 2040
 app.listen(port, () => console.log(`Server running on port: ${port}`))
 
 module.exports = app // For testing
+
+function connectionMongo() {
+  mongoose
+    .connect(url, { useCreateIndex: true, useFindAndModify: false, reconnectTries: Number.MAX_VALUE, reconnectInterval: 500 })
+    .then(() => log.info("mongo db connection - success"))
+    .catch(err => log.error(err, "mongoose connection failed"));
+}
+

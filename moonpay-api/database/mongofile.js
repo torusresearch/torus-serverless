@@ -6,7 +6,7 @@ module.exports = {
     connection: {
       host: 'mongo_db',
       database: "moonpay",
-      port: 27018,
+      port: 27017,
       user: "",
       password: ""
     }
