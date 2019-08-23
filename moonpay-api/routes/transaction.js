@@ -91,9 +91,9 @@ router.post("/", (req, res) => {
       }
       else if(doc.moonpayId == tx.moonpayId){
         console.log("some document found")
-        console.log(doc);
+        console.log(typeof(doc));
         tx._id=doc._id;
-        
+
         transaction.replaceOne(doc, tx)
         // for(key in Object.keys(doc)){
         //   console.log("key is", key, "doc.key is", doc[key])
