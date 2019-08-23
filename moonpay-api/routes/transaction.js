@@ -41,6 +41,7 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 * //{success: true}
 */
 router.post("/", (req, res) => {
+  log.info(req.headers)
   // log.info("req.body.data.status is", req.body.data.status, ", and current time is", new Date())
   // Validate the webhook's body
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
