@@ -78,10 +78,10 @@ router.post("/", (req, res) => {
     transaction.findOne({moonpayId: tx.moonpayId}, (err, tx) => {
       console.log(tx);
     })
-    // tx.save().then(doc=>{
-    //   console.log(doc);
-    //   return res.status(201).json({ success: true , data: doc});
-    // }).catch(err => console.log(err))
+    tx.save().then(doc=>{
+      console.log(doc);
+      return res.status(201).json({ success: true , data: doc});
+    }).catch(err => console.log(err))
   }catch(err){
     console.log(err)
   }
