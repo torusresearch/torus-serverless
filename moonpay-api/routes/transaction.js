@@ -41,10 +41,9 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 * //{success: true}
 */
 router.post("/", (req, res) => {
-  log.info("req.body.data.status is", req.body.data.status, ", and current time is", new Date());
-  
+  // log.info("req.body.data.status is", req.body.data.status, ", and current time is", new Date())
+  // Validate the webhook's body
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
-  console.log(errors, isValid);
   if (!isValid) {
     log.warn("Invalid inputs", errors);
     return res.sendStatus(400).json({ error: errors, success: false });
@@ -76,28 +75,26 @@ router.post("/", (req, res) => {
       "usdRate": req.body.data.usdRate,
       "gbpRate": req.body.data.gbpRate
     })
-    console.log("moonpayId is", tx.moonpayId);
+    // Check if the tx already exists.
     transaction.findOne({"moonpayId": tx.moonpayId}).lean().exec((err, doc) => {
       if (err) { 
         console.log(err); 
-        return res.sendStatus(500).json({err: err})
+        return res.status(500).json({err: err})
       }
-      //console.log("doc is", doc);
+      // If not, create a new tx
       if(doc == null){
         tx.save().then(doc=>{
           console.log("doc saved", doc);
-          return res.sendStatus(201).json({ success: true});
+          return res.status(201).json({ success: true});
         }).catch(err => console.log(err))
       }
+      // If yes, then update the tx.
       else if(doc.moonpayId == tx.moonpayId){
-        console.log("some document found")
-        console.log(doc);
         transaction.replaceOne(doc, tx)
         console.log("doc modified with new data");
+        return res.status(201).json({success: true})
       }
-      
     })
-    
   }catch(err){
     console.log(err)
   }
