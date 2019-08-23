@@ -91,7 +91,7 @@ router.post("/", (req, res) => {
       }
       else if(doc.moonpayId == tx.moonpayId){
         console.log("some document found")
-        for(key in doc){
+        for(key in Object.keys(doc)){
           console.log("key is", key, "dockey is", doc[key])
           if(doc[key] != tx[key]){
             doc[key] = tx[key]
