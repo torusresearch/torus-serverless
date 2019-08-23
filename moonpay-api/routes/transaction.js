@@ -41,7 +41,7 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 * //{success: true}
 */
 router.post("/", (req, res) => {
-  log.info("req.body.data.status is", req.body.data.status, "current time is", new Date());
+  log.info("req.body.data.status is", req.body.data.status, ", and current time is", new Date());
   
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
   console.log(errors, isValid);
@@ -76,7 +76,8 @@ router.post("/", (req, res) => {
       "usdRate": req.body.data.usdRate,
       "gbpRate": req.body.data.gbpRate
     })
-    transaction.findOne({moonpayId: tx.moonpayId}, (err, doc) => {
+    console.log("moonpayId is", tx.moonpayId);
+    transaction.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
       if (err) { console.log(err); res.status(500).json({err: err})
       console.log("doc is", doc);
       if(!doc){
