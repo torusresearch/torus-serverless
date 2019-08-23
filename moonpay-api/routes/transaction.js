@@ -85,7 +85,10 @@ router.post("/", (req, res) => {
       }
       else if(doc.moonpayId == tx.moonpayId){
         for(key in doc){
-          doc[key] = tx[key]
+          if(doc[key] != tx[key]){
+            doc[key] = tx[key]
+            console.log("modifying :", doc[key], tx[key])
+          }
         }
         doc.save(function(err){
           if(err){ console.log(err); res.status(500).json({err: err})}
