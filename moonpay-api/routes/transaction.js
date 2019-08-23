@@ -92,21 +92,8 @@ router.post("/", (req, res) => {
       else if(doc.moonpayId == tx.moonpayId){
         console.log("some document found")
         console.log(doc);
-        tx._id=doc._id;
-
         transaction.replaceOne(doc, tx)
-        // for(key in Object.keys(doc)){
-        //   console.log("key is", key, "doc.key is", doc[key])
-        //   if(doc[key] != tx[key] && doc[key] != undefined){
-        //     doc[key] = tx[key]
-        //    /// console.log("modifying :", doc[key], tx[key])
-        //   }
-        // }
         console.log("doc modified with new data");
-        // doc.save(function(err){
-        //   if(err){ console.log(err); res.sendStatus(500).json({err: err})}
-        //   return res.sendStatus(200).json({data: 'moonpay-transaction modified'})
-        // })
       }
       
     })
