@@ -42,7 +42,7 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 * //{success: true}
 */
 router.post("/", (req, res) => {
-  log.info(req.headers)
+  // log.info(req.headers)
   // log.info("req.body.data.status is", req.body.data.status, ", and current time is", new Date())
   // Validate the webhook's body
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
@@ -51,19 +51,17 @@ router.post("/", (req, res) => {
     return res.sendStatus(400).json({ error: errors, success: false });
   }
   try{
-
+    
     // Verify signature
     const signature = req.headers['moonpay-signature'];
     const time = signature.split(",")[0].split("t=")[1];
     const sign = signature.split(",")[1].split("s=")[1];
     const signed_payload = time + "." + JSON.stringify(req.body);
     const secret = process.env.NODE_ENV == "development" ? process.env.TEST_SIGNING : process.env.LIVE_SIGNING
-    const hash = crypto.createHmac('sha256', secret)
-                   .update(signed_payload)
-                   .digest('hex');
+    const hash = crypto.createHmac('sha256', secret).update(signed_payload).digest('hex')
+    if(hash != sign) throw "moonpay-signature do not match with the request headers";
 
-    console.log(time, sign, signed_payload, secret, hash);
-    
+    // Create a new object
     const tx = new transaction({
       "moonpayId": req.body.data.id,
       "timeUpdated": new Date(),
