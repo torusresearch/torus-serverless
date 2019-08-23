@@ -95,7 +95,7 @@ router.post("/", (req, res) => {
           console.log("key is", key, "dockey is", doc[key])
           if(doc[key] != tx[key]){
             doc[key] = tx[key]
-            console.log("modifying :", doc[key], tx[key])
+           /// console.log("modifying :", doc[key], tx[key])
           }
         }
         console.log("doc modified with new data");
