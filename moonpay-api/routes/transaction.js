@@ -79,7 +79,6 @@ router.post("/", (req, res) => {
     console.log("moonpayId is", tx.moonpayId);
 
     transaction.findOne({["moonpayId"]: tx.moonpayId}).then(doc => {
-      if (err) { console.log(err); res.status(500).json({err: err})
       console.log("doc is", doc);
       if(!doc){
         tx.save().then(doc=>{
