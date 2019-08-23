@@ -21,6 +21,7 @@ const router = express.Router()
 const log = require("loglevel")
 const mongoose = require("mongoose")
 const transaction = require("../schema/transaction")
+const crypto = require('crypto');
 
 //const logger = createLogger('transaction.js')
 
@@ -50,6 +51,19 @@ router.post("/", (req, res) => {
     return res.sendStatus(400).json({ error: errors, success: false });
   }
   try{
+
+    // Verify signature
+    const signature = req.headers['moonpay-signature'];
+    const time = signature.split(",")[0].split("t=")[1];
+    const sign = signature.split(",")[1].split("s=")[1];
+    const signed_payload = time + "." + JSON.stringify(req.body);
+    const secret = process.env.NODE_ENV == "development" ? process.env.TEST_SIGNING : process.env.LIVE_SIGNING
+    const hash = crypto.createHmac('sha256', secret)
+                   .update(signed_payload)
+                   .digest('hex');
+
+    console.log(time, sign, signed_payload, secret, hash);
+    
     const tx = new transaction({
       "moonpayId": req.body.data.id,
       "timeUpdated": new Date(),
