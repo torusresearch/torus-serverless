@@ -77,7 +77,8 @@ router.post("/", (req, res) => {
       "gbpRate": req.body.data.gbpRate
     })
     console.log("moonpayId is", tx.moonpayId);
-    transaction.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
+
+    mongoose.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
       if (err) { console.log(err); res.status(500).json({err: err})
       console.log("doc is", doc);
       if(!doc){
