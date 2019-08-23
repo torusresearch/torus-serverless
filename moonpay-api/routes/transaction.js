@@ -41,10 +41,10 @@ const validatePostMoonpayTransaction = require('../validations/postMoonpayTransa
 * //{success: true}
 */
 router.post("/", (req, res) => {
-  log.info("req.body is", req.body, "current time is", new Date());
+  //log.info("req.body is", req.body, "current time is", new Date());
   
   const {errors, isValid} = validatePostMoonpayTransaction(req.body);
-  //console.log(errors, isValid);
+  console.log(errors, isValid);
   if (!isValid) {
     log.warn("Invalid inputs", errors);
     return res.status(400).json({ error: errors, success: false });
@@ -52,6 +52,7 @@ router.post("/", (req, res) => {
   try{
     const tx = new transaction({
       "moonpayId": req.body.data.id,
+      "timeUpdated": new Date(),
       "public_address": req.body.externalCustomerId,
       "createdAt": req.body.data.createdAt,
       "updatedAt": req.body.data.updatedAt,
@@ -77,7 +78,8 @@ router.post("/", (req, res) => {
     })
     transaction.findOne({moonpayId: tx.moonpayId}, (err, doc) => {
       if (err) { console.log(err); res.status(500).json({err: err})
-      if(doc == null ){
+      console.log("doc is", doc);
+      if(!doc){
         tx.save().then(doc=>{
           console.log(doc);
           return res.status(201).json({ success: true , data: doc});

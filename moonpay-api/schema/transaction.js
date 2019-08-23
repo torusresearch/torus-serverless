@@ -6,6 +6,10 @@ var transactionSchema = new Schema({
     type: String,
     required: true,
   },
+  "timeUpdated":{
+    type: Date,
+    required: true
+  },
   "public_address":{
     type: String,
     required: true
