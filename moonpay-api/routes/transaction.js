@@ -77,8 +77,11 @@ router.post("/", (req, res) => {
       "gbpRate": req.body.data.gbpRate
     })
     console.log("moonpayId is", tx.moonpayId);
-
-    transaction.findOne({["moonpayId"]: tx.moonpayId}).then(doc => {
+    transaction.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
+      if (err) { 
+        console.log(err); 
+        res.status(500).json({err: err})
+      }
       console.log("doc is", doc);
       if(!doc){
         tx.save().then(doc=>{
@@ -98,8 +101,8 @@ router.post("/", (req, res) => {
           res.send(200).json({data: 'moonpay-transaction modified'})
         })
       }
-    }
-  }).catch(err => console.log(err));
+      
+    })
     
   }catch(err){
     console.log(err)
