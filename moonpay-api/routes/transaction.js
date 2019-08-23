@@ -80,13 +80,13 @@ router.post("/", (req, res) => {
     transaction.findOne({"moonpayId": tx.moonpayId}, (err, doc) => {
       if (err) { 
         console.log(err); 
-        res.sendStatus(500).json({err: err})
+        return res.sendStatus(500).json({err: err})
       }
       //console.log("doc is", doc);
       if(doc == null){
         tx.save().then(doc=>{
-          console.log(doc);
-          return res.sendStatus(201).json({ success: true , data: doc});
+          console.log("doc saved", doc);
+          return res.sendStatus(201).json({ success: true});
         }).catch(err => console.log(err))
       }
       else if(doc.moonpayId == tx.moonpayId){
@@ -98,7 +98,7 @@ router.post("/", (req, res) => {
         }
         doc.save(function(err){
           if(err){ console.log(err); res.sendStatus(500).json({err: err})}
-          res.sendStatus(200).json({data: 'moonpay-transaction modified'})
+          return res.sendStatus(200).json({data: 'moonpay-transaction modified'})
         })
       }
       
