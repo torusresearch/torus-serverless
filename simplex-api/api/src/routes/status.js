@@ -1,5 +1,5 @@
 import response from '../response'
-import createLogger from 'logging'
+import createLogger from '@lionellbriones/logging'
 import {
   getOrderById
 } from '../mangodb'

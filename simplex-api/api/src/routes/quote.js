@@ -1,4 +1,4 @@
-import createLogger from 'logging'
+import createLogger from '@lionellbriones/logging'
 import debugLogger from 'debug'
 import {
   getQuote

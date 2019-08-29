@@ -4,7 +4,7 @@ import {
   EventSchema
 } from '../mangodb'
 import eachOfSeries from 'async/eachOfSeries'
-import createLogger from 'logging'
+import createLogger from '@lionellbriones/logging'
 import {
   mangodb,
   simplex
