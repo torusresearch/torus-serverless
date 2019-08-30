@@ -1,4 +1,4 @@
-import createLogger from 'logging'
+import createLogger from '@lionellbriones/logging'
 import wav from 'wallet-address-validator'
 import uuidv4 from 'uuid/v4'
 import {

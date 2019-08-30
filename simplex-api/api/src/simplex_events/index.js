@@ -1,6 +1,6 @@
 import getEvents from './retrieveEvents'
 
-import createLogger from 'logging'
+import createLogger from '@lionellbriones/logging'
 const logger = createLogger('simplex_events/index.js')
 const cron = require('node-cron')
 
