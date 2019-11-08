@@ -20,6 +20,15 @@ exports.handler = (event, context, callback) => {
     ];
   }
 
+  if (uri.includes("popup")) {
+    headers["cache-control"] = [
+      {
+        key: "Cache-Control",
+        value: "max-age=3600"
+      }
+    ];
+  }
+
   headers["strict-transport-security"] = [
     {
       key: "Strict-Transport-Security",
