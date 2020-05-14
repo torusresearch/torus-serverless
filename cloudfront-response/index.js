@@ -4,27 +4,18 @@ exports.handler = (event, context, callback) => {
   const uri = event.Records[0].cf.request.uri;
   const headers = response.headers;
 
-  if (uri.includes("service-worker.js")) {
-    headers["cache-control"] = [
-      {
-        key: "Cache-Control",
-        value: "max-age=3600"
-      }
-    ];
+  headers["cache-control"] = [
+    {
+      key: "Cache-Control",
+      value: "max-age=3600"
+    }
+  ];
 
+  if (uri.includes("service-worker.js")) {
     headers["service-worker-allowed"] = [
       {
         key: "Service-Worker-Allowed",
         value: "/"
-      }
-    ];
-  }
-
-  if (uri.includes("popup")) {
-    headers["cache-control"] = [
-      {
-        key: "Cache-Control",
-        value: "max-age=3600"
       }
     ];
   }
