@@ -20,7 +20,7 @@ exports.handler = (event, context, callback) => {
   let newuri;
   if (RegExp(/^\/v[0-9][0-9]*\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json|txt|gif)$/).test(olduri)) {
     newuri = olduri;
-  } else if (RegExp(/^\/v[0-9][0-9]*[^\.]*$/).test(olduri)) {
+  } else if (RegExp(/^\/v[0-9][0-9]*\/[^\.]*$/).test(olduri)) {
     const secondIndex = olduri.indexOf("/", 1);
     newuri = olduri.slice(0, secondIndex) + `/index.html`;
   } else if (RegExp(/^\/v[0-9][0-9]*[\/]?$/).test(olduri)) {
