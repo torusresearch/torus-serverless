@@ -18,7 +18,7 @@ exports.handler = (event, context, callback) => {
   // if uri is like /wallet or /wallet/ , then return app.tor.us/${version}/index.html ^\/[^\.]*$
   // if uri is like /, then return app.tor.us/${version}/index.html app\.tor\.us\/$
   let newuri;
-  if (RegExp(/^\/v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json|txt|gif)$/).test(olduri)) {
+  if (RegExp(/^\/v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json|txt|gif|ico)$/).test(olduri)) {
     newuri = olduri;
   } else if (RegExp(/^\/v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\/[^\.]*$/).test(olduri)) {
     const secondIndex = olduri.indexOf("/", 1);
@@ -27,7 +27,7 @@ exports.handler = (event, context, callback) => {
     const secondIndex = olduri.indexOf("/", 1);
     const slicedOrignal = secondIndex === -1 ? olduri : olduri.slice(0, secondIndex);
     newuri = slicedOrignal + `/index.html`;
-  } else if (RegExp(/^\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json|txt|gif)$/).test(olduri)) {
+  } else if (RegExp(/^\/..*\.(js|css|png|PNG|svg|html|jpg|JPG|jpeg|JPEG|JSON|json|txt|gif|ico)$/).test(olduri)) {
     newuri = olduri.replace("/", `/${version}/`);
   } else if (RegExp(/^\/[^\.]*$/).test(olduri)) {
     newuri = `/${version}/index.html`;
