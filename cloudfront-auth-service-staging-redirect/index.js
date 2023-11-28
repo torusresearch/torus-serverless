@@ -36,8 +36,8 @@ exports.handler = (event, context, callback) => {
   }
 
   // Log the URI as received by CloudFront and the new URI to be used to fetch from origin
-  console.log("Old URI: " + olduri);
-  console.log("New URI: " + newuri);
+  // console.log("Old URI: " + olduri);
+  // console.log("New URI: " + newuri);
 
   // Replace the received URI with the URI that includes the index page
   request.uri = newuri;
