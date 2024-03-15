@@ -1,6 +1,6 @@
 "use strict";
 
-const GLOBAL_VERSION = "v7";
+const GLOBAL_VERSION = "v8";
 
 exports.handler = (event, context, callback) => {
   const version = GLOBAL_VERSION;
